@@ -6,7 +6,7 @@ services:
     build: ./exp
     command: sh -c "yarn install && node src/index.js"
     ports:
-      - 5000:5000
+      - ${EXP_PORT}:${EXP_PORT}
     working_dir: /app
     volumes:
       - ./exp:/app
@@ -15,6 +15,7 @@ services:
       MYSQL_USER: "${MYSQL_USER}"
       MYSQL_PASSWORD: "${MYSQL_PASS}"
       MYSQL_DB: "${MYSQL_DB}"
+      EXP_PORT: ${EXP_PORT}
       TEST_ENV_VAR: "${TEST_VAR}"
     depends_on:
       - mysql
@@ -39,6 +40,8 @@ services:
     working_dir: /app
     volumes:
       - ./po-front:/app
+    environment:
+      EXP_PORT: ${EXP_PORT}
     networks:
       - front-net
     depends_on:

@@ -13,6 +13,7 @@ console.log('--USING TEST VAR--');
 console.log(process.env.TEST_ENV_VAR);
 console.log('/-USING TEST VAR-/');
 
+const port = process.env.EXP_PORT;
 
 app.use(cors())
 app.use(require('body-parser').json());
@@ -33,7 +34,7 @@ app.get('/', (req, res) => {
 });
 
 db.init().then(() => {
-  app.listen(5000, () => console.log('Listening on port 5000'));
+  app.listen(port, () => console.log(`Listening on port ${port}`));
 }).catch((err) => {
   console.error(err);
   process.exit(1);
