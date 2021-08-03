@@ -1,0 +1,55 @@
+version: "3.9"
+
+services:
+
+  exprest:
+    build: ./exp
+    command: sh -c "yarn install && node src/index.js"
+    ports:
+      - 5000:5000
+    working_dir: /app
+    volumes:
+      - ./exp:/app
+    environment:
+      MYSQL_HOST: "${MYSQL_HOST}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASS}"
+      MYSQL_DB: "${MYSQL_DB}"
+      TEST_ENV_VAR: "${TEST_VAR}"
+    depends_on:
+      - mysql
+    networks:
+      - back-net
+
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - db-data-mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_PASS}"
+      MYSQL_DATABASE: "${MYSQL_DB}"
+    networks:
+      - back-net
+
+  front-end:
+    build: ./po-front
+    command: sh -c "yarn install && yarn start"
+    ports:
+      - 3000:3000
+    working_dir: /app
+    volumes:
+      - ./po-front:/app
+    networks:
+      - front-net
+    depends_on:
+      - exprest
+
+networks:
+  front-net:
+    driver: bridge
+  back-net:
+    driver: bridge
+
+volumes:
+  db-data-mysql:
+    external: true
