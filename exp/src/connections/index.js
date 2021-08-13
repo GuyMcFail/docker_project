@@ -21,7 +21,26 @@ async function init() {
     });
 
     return new Promise((acc, rej) => {
-        pool.query(
+      pool.getConnection(function (err, conn) {
+        if (err) return rej(err);
+
+        conn.query('CREATE TABLE IF NOT EXISTS pos (id int(10) unsigned AUTO_INCREMENT, vendor varchar(3), ordered boolean, orderDate date, PRIMARY KEY (id))',
+        function (err, rows) {
+          if (err) throw err;
+
+          conn.query('CREATE TABLE IF NOT EXISTS products (poId int(10) unsigned NOT NULL, prodId varchar(36) NOT NULL, prodName varchar(255), prodDescription varchar(255), qty int(11), recieved boolean DEFAULT false)', function (err, rows) {
+            if (err) throw err;
+
+            console.log(`Connected to mysql db at host ${host} + created Tables`);
+            conn.release();
+            acc();
+          });
+        });
+      });
+
+
+
+        /*pool.query(
             'CREATE TABLE IF NOT EXISTS pos (id int(10) unsigned, vendor varchar(3), ordered boolean, orderDate date)',
             err => {
                 if (err) return rej(err);
@@ -29,7 +48,8 @@ async function init() {
                 console.log(`Connected to mysql db at host ${host}`);
                 acc();
             },
-        );
+        );*/
+
     });
 }
 

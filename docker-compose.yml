@@ -25,7 +25,7 @@ services:
   mysql:
     image: mysql:5.7
     volumes:
-      - db-data-mysql:/var/lib/mysql
+      - mysql-test-vol:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: "${MYSQL_PASS}"
       MYSQL_DATABASE: "${MYSQL_DB}"
@@ -54,5 +54,4 @@ networks:
     driver: bridge
 
 volumes:
-  db-data-mysql:
-    external: true
+  mysql-test-vol:
