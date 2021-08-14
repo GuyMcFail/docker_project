@@ -3,7 +3,7 @@ version: "3.9"
 services:
 
   exprest:
-    build: ./exp
+    image: node:12-alpine
     command: sh -c "yarn install && node src/index.js"
     ports:
       - ${EXP_PORT}:${EXP_PORT}
@@ -33,7 +33,7 @@ services:
       - back-net
 
   front-end:
-    build: ./po-front
+    image: node:12-alpine
     command: sh -c "yarn install && yarn start"
     ports:
       - 3000:3000
