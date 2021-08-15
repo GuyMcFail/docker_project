@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import {Link} from 'react-router-dom';
+import {restAPI, posRoute} from '../config/endpoints'
 
 export default class POItems extends React.Component {
   constructor(props){
@@ -27,7 +28,7 @@ export default class POItems extends React.Component {
     const headers = {
       'Content-Type': 'text/plain',
     }
-    axios.get(`http://localhost:5000/po-products/${this.props.match.params.poId}`, { headers })
+    axios.get(`${restAPI}${posRoute}${this.props.match.params.poId}`, { headers })
     .then((resp) => {
       this.setState({
         product_list: resp.data
@@ -50,7 +51,7 @@ export default class POItems extends React.Component {
     }
 
     axios.post(
-      `http://localhost:5000/po-products/${this.props.match.params.poId}`,
+      `${restAPI}${posRoute}${this.props.match.params.poId}`,
       data,
     )
     .then((resp) => {
@@ -63,7 +64,7 @@ export default class POItems extends React.Component {
 
   recieveProduct(id){
     axios.put(
-      `http://localhost:5000/po-products/${id}`
+      `${restAPI}${posRoute}${id}`
     )
     .then((resp) => {
       this.getProductData();

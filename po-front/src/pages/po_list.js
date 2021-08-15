@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import {Link} from 'react-router-dom';
+import {restAPI, posRoute} from '../config/endpoints'
 
 export default class POList extends React.Component {
   constructor(){
@@ -27,7 +28,7 @@ export default class POList extends React.Component {
     const headers = {
       'Content-Type': 'text/plain',
     }
-    axios.get(`http://localhost:5000/pos`, { headers })
+    axios.get(`${restAPI}${posRoute}`, { headers })
     .then((resp) => {
       this.setState({
         po_list: resp.data
@@ -44,7 +45,7 @@ export default class POList extends React.Component {
     }
 
     axios.post(
-      `http://localhost:5000/pos`,
+      `${restAPI}${posRoute}`,
       data,
     )
     .then((resp) => {
@@ -57,7 +58,7 @@ export default class POList extends React.Component {
 
   orderPo(id){
     axios.put(
-      `http://localhost:5000/pos/${id}`
+      `${restAPI}${posRoute}${id}`
     )
     .then((resp) => {
       this.getPoData();
